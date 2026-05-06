@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/functions/afr_prediction.py">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/functions/afr_prediction.py" />
+              <option name="updatedContent" value="import pandas as pd&#10;&#10;from helpers.data import get_capacity_market_data&#10;from helpers.settings import PRICE_AREA&#10;&#10;def forecast_afr_prices(target_date: pd.Timestamp) -&gt; pd.Series:&#10;    &quot;&quot;&quot;&#10;    Naive AFR price forecast for target_date.&#10;&#10;    Fetches the last 3 days of AFR capacity prices, and returns the mean daily profile&#10;    indexed by target_date's 15-min UTC timestamps.&#10;&#10;    :param target_date: the day to forecast (timezone-aware)&#10;    :return: Series of 96 forecast prices indexed by 15-min UTC timestamps&#10;    &quot;&quot;&quot;&#10;&#10;    spot = get_capacity_market_data(&#10;        time_from=target_date - pd.DateOffset(days=2),&#10;        time_to=target_date,&#10;        price_area=PRICE_AREA,&#10;    ).set_index(&quot;TimeUTC&quot;)[&quot;AfrrPriceEUR&quot;]&#10;&#10;    mean_profile = spot.groupby(spot.index.time).mean().values&#10;    target_idx = target_date.tz_convert(&quot;UTC&quot;) + pd.timedelta_range(start=&quot;0min&quot;, periods=96, freq=&quot;15min&quot;)&#10;&#10;    return pd.Series(mean_profile, index=target_idx, name=&quot;AfrrPriceForecastEUR&quot;)" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

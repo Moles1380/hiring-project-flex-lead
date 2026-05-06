@@ -81,3 +81,5 @@ def get_capacity_market_data(
     df["TimeUTC"] = pd.to_datetime(df["TimeUTC"]).dt.tz_localize("UTC")
     df["TimeDK"] = pd.to_datetime(df["TimeDK"]).dt.tz_localize("CET", ambiguous="infer")
     return df
+
+
