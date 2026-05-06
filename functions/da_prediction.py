@@ -21,7 +21,9 @@ def forecast_da_prices(target_date: pd.Timestamp) -> pd.Series:
         price_area=PRICE_AREA,
     ).set_index("TimeUTC")["DayAheadPriceEUR"]
 
-    mean_profile = spot.groupby(spot.index.time).mean().values
-    target_idx = target_date.tz_convert("UTC") + pd.timedelta_range(start="0min", periods=96, freq="15min")
+    # Forward-fill hourly prices to 15-min, then compute mean per 15-min slot across days
+    spot_15min = spot.resample("15min").ffill()
+    mean_profile = spot_15min.groupby(spot_15min.index.time).mean().values
 
+    target_idx = target_date.tz_convert("UTC") + pd.timedelta_range(start="0min", periods=96, freq="15min")
     return pd.Series(mean_profile, index=target_idx, name="DayAheadPriceForecastEUR")
